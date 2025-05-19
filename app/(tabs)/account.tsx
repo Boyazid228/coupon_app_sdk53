@@ -130,14 +130,18 @@ const Account = () => {
                             <Image style={styles.img} source={require("@/assets/images/vlogging.png")}/>
                             <Text style={styles.text}>{ t('My_Vlog') }</Text>
                         </View>
-                        <View style={styles.myBoxes}>
-                            <Image style={styles.img} source={require("@/assets/images/online-menu.png")}/>
-                            <Text style={styles.text}>{ t('My_Orders') }</Text>
-                        </View>
-                        <View style={styles.myBoxes}>
-                            <Image style={styles.img} source={require("@/assets/images/reviews.png")}/>
-                            <Text style={styles.text}>{ t('My_Reviews') }</Text>
-                        </View>
+                        <TouchableOpacity onPress={()=> goto('orders')}>
+                            <View style={styles.myBoxes}>
+                                <Image style={styles.img} source={require("@/assets/images/online-menu.png")}/>
+                                <Text style={styles.text}>{ t('My_Orders') }</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=> goto('myReviewsUser')}>
+                            <View style={styles.myBoxes}>
+                                <Image style={styles.img} source={require("@/assets/images/reviews.png")}/>
+                                <Text style={styles.text}>{ t('My_Reviews') }</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.menu}>
                         <Text style={styles.menuItem}>{ t('Payment') }</Text>

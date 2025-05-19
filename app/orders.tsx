@@ -6,7 +6,7 @@ import {
     Image,
     FlatList,
     ActivityIndicator,
-    TouchableOpacity, RefreshControl,
+    TouchableOpacity, RefreshControl, ScrollView,
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,14 +16,17 @@ import config from '@/settings';
 import Stars from '@/components/Stars';
 import styles from '@/assets/styles/shops.style';
 import { router } from 'expo-router';
-import '../../i18n/i18n';
+import '../i18n/i18n';
 import { useTranslation } from 'react-i18next';
+import Cupon from "@/components/Cupon";
+import ApiHook from "@/hooks/ApiHook";
 
-const Favorits = () => {
+const Orders = () => {
     const navigation = useNavigation();
+    const {getData, data: data, loading: ordersLoading, error: menuError } = ApiHook();
     const { postData } = PostApiHook("");
     const { refresh } = useAuthTokenRefresh();
-    const [likes, setLikes] = useState([]);
+    const [orders, setOrders] = useState([]);
     const [loadingData, setLoadingData] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const { t, i18n } = useTranslation();
@@ -37,7 +40,7 @@ const Favorits = () => {
             }
 
             const tokenParse = JSON.parse(jsonValue);
-            const user = await postData({ token: tokenParse.access }, tokenParse.access, '/getUser/');
+            const user = await postData({ token: tokenParse.access }, tokenParse.access, '/order/');
             if (user?.code === 'token_not_valid') {
                 const newAccessToken = await refresh();
                 if (!newAccessToken) {
@@ -46,12 +49,9 @@ const Favorits = () => {
                 }
             }
 
-            const likesResponse = await postData(
-                { id: user.id },
-                tokenParse.access,
-                '/getLike/'
-            );
-            setLikes(likesResponse || []);
+
+            const ordersResponse = await getData('/order/', tokenParse.access)
+            setOrders(ordersResponse || []);
         } catch (error) {
             console.error('Error fetching likes:', error);
         } finally {
@@ -74,7 +74,7 @@ const Favorits = () => {
 
 
 
-    if (!likes.length) {
+    if (!orders.length) {
         return (
             <View style={styles.container}>
                 <Text style={styles.short}>{ t('Data_not_found') }</Text>
@@ -86,41 +86,25 @@ const Favorits = () => {
         router.push(`/card?id=${id}&name="${name}"`);
     };
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity
-            key={item.id}
-            style={styles.shop}
-            onPress={() => handleImagePress(item.shop.id, item.shop.name)}
-        >
-            <View style={styles.flex}>
-                <Image
-                    style={styles.img}
-                    source={{ uri: config.img_link + item.shop.preview }}
-                    defaultSource={require('@/assets/loader/loader.gif')}
-                />
-                <View style={styles.textBox}>
-                    <Text style={styles.name}>{item.shop.name}</Text>
-                    <Stars stars_count={item.shop.rating} />
-                    <Text style={styles.short}>{item.shop.short_description}</Text>
-                </View>
-            </View>
-        </TouchableOpacity>
-    );
+
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{t('My_Favorites')}</Text>
-            <FlatList
-                data={likes}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
-                contentContainerStyle={styles.flstList}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+
+            <ScrollView refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+            }>
+                {(!orders || (orders.length === 0 && !ordersLoading)) ? <Text  style={styles.ntf}>{t('Data_not_found')}</Text> : <View  style={styles.box}>
+
+                    { orders.map(i => (
+                        <Cupon key={i.id} coupon={i.product} qr={true}/>
+
+                    ))}
+                </View>
                 }
-            />
+            </ScrollView>
         </View>
     );
 };
 
-export default Favorits;
+export default Orders;

@@ -6,6 +6,8 @@ import PostApiHook from "@/hooks/PostApiHook";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {router, Stack} from 'expo-router';
 import { NavigationContext } from "@react-navigation/native";
+import '../i18n/i18n';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
     const navigation = useNavigation();
@@ -17,7 +19,7 @@ const Login = () => {
     const [errorPassword, setErrorPassword] = useState(false);
     const [apiError, setApiError] = useState('');
     const { postData, loading } = PostApiHook(`/token/`);
-
+    const { t, i18n } = useTranslation();
     const validateInputs = () => {
         const isLoginValid = login.trim() !== '';
         const isPasswordValid = password.trim() !== '';
@@ -46,21 +48,21 @@ const Login = () => {
                 }
 
                 // Navigate to account screen
-                router.navigate('account', { login: true });
+                router.push(`/account?login=true`);
             } else {
-                setApiError('Invalid username or password. Please try again.');
+                setApiError(t('error_login'));
             }
         } catch (e) {
             console.error('Login error:', e);
-            setApiError('An error occurred. Please try again later.');
+            setApiError(t('error_login2'));
         }
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.contentBox}>
-                <Text style={styles.title}>Welcome back</Text>
-                <Text style={styles.sub_title}>We're so excited to see you again!</Text>
+                <Text style={styles.title}>{ t('Welcome_back') }</Text>
+                <Text style={styles.sub_title}>{ t('Welcome_text') }</Text>
 
                 {/* Display API error */}
                 {apiError ? (
@@ -71,32 +73,32 @@ const Login = () => {
 
                 {/* Username Input */}
                 <View style={styles.inputBox}>
-                    <Text style={styles.label}>Login</Text>
+                    <Text style={styles.label}>{ t('Login') }</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Enter your username"
+                        placeholder={ t('Enter_your_username') }
                         placeholderTextColor="gray"
                         onChangeText={setLogin}
                         value={login}
                     />
                     {errorLogin && (
-                        <Text style={styles.error}>The field cannot be blank.</Text>
+                        <Text style={styles.error}>{ t('error_blank') }</Text>
                     )}
                 </View>
 
                 {/* Password Input */}
                 <View style={styles.inputBox}>
-                    <Text style={styles.label}>Password</Text>
+                    <Text style={styles.label}>{ t('Password') }</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Enter your password"
+                        placeholder={ t('Enter_your_password') }
                         placeholderTextColor="gray"
                         secureTextEntry // Masks the password input
                         onChangeText={setPassword}
                         value={password}
                     />
                     {errorPassword && (
-                        <Text style={styles.error}>The field cannot be blank.</Text>
+                        <Text style={styles.error}>{ t('error_blank') }</Text>
                     )}
                 </View>
 
@@ -109,7 +111,7 @@ const Login = () => {
                     {loading ? (
                         <ActivityIndicator size="small" color="#FFF" />
                     ) : (
-                        <Text style={styles.searchButtonText}>Submit</Text>
+                        <Text style={styles.searchButtonText}>{ t('Submit') }</Text>
                     )}
                 </TouchableOpacity>
             </View>

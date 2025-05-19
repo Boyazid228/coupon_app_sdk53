@@ -9,7 +9,7 @@ import { useWindowDimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import {router} from "expo-router";  // Import PropTypes
 
-const Cupon = ({ coupon }) => {
+const Cupon = ({ coupon, qr=false }) => {
     const navigation = useNavigation();
     const { height, width } = useWindowDimensions();
 
@@ -45,16 +45,31 @@ const Cupon = ({ coupon }) => {
                         defaultSource={require('@/assets/loader/loader.gif')} // Fallback image
                     />
                     <View style={styles.short_desc}>
-                        <RenderHtml
+                        {!qr ? (<RenderHtml
                             contentWidth={width }
 
                             source={{ html: dynamicHtml }}
-                        />
+                        /> ) : null}
                         <Text>Time: {coupon.time_start}</Text>
                         <Text> - {coupon.time_finish}</Text>
                     </View>
+
                 </View>
+                {qr ? (
+                    <View style={styles.cupon}>
+                        <Image
+                            style={{ width: 200, height: 200, margin: 'auto' }}
+                            source={require('@/assets/images/qr.png')}
+                            onError={() => {
+                                // Handle the case where the image fails to load
+                                console.warn("Image failed to load");
+                            }}
+                            defaultSource={require('@/assets/loader/loader.gif')}
+                        />
+                    </View>
+                ) : null}
             </View>
+
         </TouchableOpacity>
     );
 };

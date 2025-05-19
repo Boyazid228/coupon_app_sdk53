@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     rev:{
         flexDirection: "row",
         alignItems:"center",
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 10,
     },
     rImg:{
         width: 20,

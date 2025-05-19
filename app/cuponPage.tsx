@@ -55,7 +55,7 @@ const CuponPage = () => {
     if (!couponData || (couponData.length === 0 && !couponError)) {
         return (
             <View style={styles.container}>
-                <Text>{ t(Data_not_found) }</Text>
+                <Text>{ t('Data_not_found') }</Text>
             </View>
         );
     }
@@ -78,13 +78,13 @@ const CuponPage = () => {
 
 
         }else{
-            alert("Success")
+            router.push(`/orders`);
         }
 
     };
 
     const goto = () =>{
-        router.push(`/reviews?id=${couponData.id}&type="coupon"`);
+        router.push(`/reviews?id=${couponData.id}&type=coupon`);
     }
 
     const dynamicHtml = couponData.description;

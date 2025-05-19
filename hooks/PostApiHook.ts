@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import config from "@/settings";
+import i18n from "@/i18n/i18n";
 
 const PostApiHook = (url) => {
     const [loading, setLoading] = useState(false);
@@ -15,10 +16,12 @@ const PostApiHook = (url) => {
         }
 
         try {
+            const lang = i18n.language || 'en';
             const response = await fetch(config.apiBaseUrl+url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept-Language': lang,
                     ...(token && { 'Authorization': `Bearer ${token}` }),
                 },
                 body: JSON.stringify(body),

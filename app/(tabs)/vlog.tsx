@@ -67,7 +67,7 @@ const Vlog = () => {
     if (!vlogData || vlogData.length === 0) {
         return (
             <View style={styles.container}>
-                <Text style={{ textAlign: 'center', marginTop: 20 }}>Данные не найдены</Text>
+                <Text style={{ textAlign: 'center', marginTop: 20 }}>{ t('Data_not_found') }</Text>
             </View>
         );
     }

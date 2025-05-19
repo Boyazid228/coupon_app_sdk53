@@ -4,7 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "@/assets/styles/login.style";
 import PostApiHook from "@/hooks/PostApiHook";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import '../i18n/i18n';
+import { useTranslation } from 'react-i18next';
+import {router} from "expo-router";
 const Signup = () => {
     const navigation = useNavigation();
 
@@ -18,9 +20,12 @@ const Signup = () => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [errorLogin, setErrorLogin] = useState(false);
-    const [errorLoginText, setErrorLoginText] = useState('The field cannot be blank.');
+    const { t, i18n } = useTranslation();
+    const [errorLoginText, setErrorLoginText] = useState(t('error_blank'));
     const [errorPassword, setErrorPassword] = useState(false);
     const { postData, loading, error, data } = PostApiHook(`/signup/`);
+
+
 
     const validateInput = () => {
         const isLoginValid = login.trim() !== '';
@@ -51,7 +56,7 @@ const Signup = () => {
                     console.error('Error saving to AsyncStorage:', storageError);
                 }
 
-                navigation.navigate('account', { login: true });
+                router.push(`/account?login=true`);
             } else {
                 if(response){
                     if(response.username){
@@ -73,8 +78,8 @@ const Signup = () => {
     return (
         <View style={styles.container}>
             <View style={styles.contentBox}>
-                <Text style={styles.title}>Welcome</Text>
-                <Text style={styles.sub_title}>We're so excited to see you!</Text>
+                <Text style={styles.title}>{ t('welcome') }</Text>
+                <Text style={styles.sub_title}>{ t('sing') }</Text>
 
                 {error && (
                     <View style={styles.errorBox}>
@@ -83,10 +88,10 @@ const Signup = () => {
                 )}
 
                 <View style={styles.inputBox}>
-                    <Text style={styles.label}>Login</Text>
+                    <Text style={styles.label}>{ t('Login') }</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Enter your login"
+                        placeholder={ t('Enter_your_username') }
                         placeholderTextColor="gray"
                         onChangeText={setLogin}
                         value={login}
@@ -97,17 +102,17 @@ const Signup = () => {
                 </View>
 
                 <View style={styles.inputBox}>
-                    <Text style={styles.label}>Password</Text>
+                    <Text style={styles.label}>{ t('Password') }</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Enter your password"
+                        placeholder={ t('Enter_your_password') }
                         placeholderTextColor="gray"
                         secureTextEntry // Makes the input secure for passwords
                         onChangeText={setPassword}
                         value={password}
                     />
                     {!errorPassword || (
-                        <Text style={styles.error}>The field cannot be blank.</Text>
+                        <Text style={styles.error}>{ t('error_blank') }</Text>
                     )}
                 </View>
 
@@ -119,7 +124,7 @@ const Signup = () => {
                     {loading ? (
                         <ActivityIndicator size="small" color="#FFF" />
                     ) : (
-                        <Text style={styles.searchButtonText}>Submit</Text>
+                        <Text style={styles.searchButtonText}>{ t('Submit') }</Text>
                     )}
                 </TouchableOpacity>
             </View>

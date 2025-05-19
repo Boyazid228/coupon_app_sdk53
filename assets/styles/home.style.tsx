@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     star:{
-        width: "100%",
-        height: "100%",
+        width: 20,
+        height: 20,
         margin:2
     },
     bannerText:{

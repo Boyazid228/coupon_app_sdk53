@@ -109,7 +109,7 @@ const Card = () => {
     }
     function goto() {
 
-        router.push(`/reviews?id=${data.id}&type="shop"`);
+        router.push(`/reviews?id=${data.id}&type=shop`);
     }
     function setLike() {
         seLike("start")
@@ -173,8 +173,8 @@ const Card = () => {
 
                 <Modal visible={visible} transparent animationType="fade">
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                        <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-                            <Text>Info: {data.name}</Text>
+                        <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, maxWidth:"80%" }}>
+                            <Text style={{ marginBottom: 10 }}>{ t("Info") }: {data.name}</Text>
                             <RenderHtml contentWidth={300} source={{ html: htmlContent }} />
                             <Button title="OK" onPress={() => setVisible(false)} />
                         </View>

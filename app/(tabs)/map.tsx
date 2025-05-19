@@ -99,7 +99,7 @@ export default function Map() {
                             longitude: place.longitude,
                         }}
                         title={place.shop.name}
-                        onCalloutPress={() => handlePress(place.shop.id, place.shop.name)} // Исправленный обработчик нажатия
+                        onCalloutPress={() => handlePress(place.shop.id, place.shop.name)}
                     >
                         <Image
                             source={place.shop.logo ? { uri: config.img_link + place.shop.logo } : customMarkerImage}
