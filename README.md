@@ -53,6 +53,6 @@ Join our community of developers creating universal apps.
 screenshot
 ![image](https://github.com/user-attachments/assets/15e5df9a-e66c-4542-99c6-a97659f0bbcf)
 
-demo video in /demo/
+demo video [in /demo/](https://youtube.com/shorts/Y5b31x1Pz9A?feature=share)
 
 
